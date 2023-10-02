@@ -11,4 +11,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FantasyFights.DAL\FantasyFights.DAL.csproj" />
+    <ProjectReference Include="..\FantasyFights.BLL\FantasyFights.BLL.csproj" />
+  </ItemGroup>
+
 </Project>

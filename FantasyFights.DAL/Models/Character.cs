@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FantasyFights.DAL.Other;
 
-namespace FantasyFightsApi.Models
+namespace FantasyFights.DAL.Models
 {
     public class Character
     {

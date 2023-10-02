@@ -1,0 +1,41 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using FantasyFights.DAL.Models;
+using FantasyFights.BLL.Services.CharactersService;
+
+namespace FantasyFights.API.Controllers
+{
+    [ApiController]
+    [Route("api/characters")]
+    public class CharactersController : ControllerBase
+    {
+        private readonly ICharactersService _characterService;
+
+        public CharactersController(ICharactersService charactersService)
+        {
+            _characterService = charactersService;
+        }
+
+        [HttpGet]
+        public ActionResult<List<Character>> GetAllCharacters()
+        {
+            return Ok(_characterService.GetAllCharacters());
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<Character> GetCharacter(string id)
+        {
+            try
+            {
+                return Ok(_characterService.GetCharacter(id));
+            }
+            catch (NullReferenceException exception)
+            {
+                return NotFound(new { exception.Message });
+            }
+        }
+    }
+}
