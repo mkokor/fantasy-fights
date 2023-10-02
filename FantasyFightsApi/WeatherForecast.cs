@@ -1,4 +1,4 @@
-namespace FantasyFights.API;
+namespace FantasyFightsApi;
 
 public class WeatherForecast
 {

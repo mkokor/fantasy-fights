@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace FantasyFights.API.Controllers;
+namespace FantasyFightsApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
