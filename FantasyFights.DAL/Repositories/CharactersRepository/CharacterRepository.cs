@@ -8,26 +8,21 @@ namespace FantasyFights.DAL.Repositories.CharactersRepository
 {
     public class CharacterRepository : ICharacterRepository
     {
-        private static List<Character> characters = new List<Character>
+        private static List<Character> _characters = new();
+
+        public CharacterRepository(List<Character> characters)
         {
-            new Character
-            {
-                Name = "Asterix"
-            },
-            new Character
-            {
-                Name = "Obelix"
-            }
-        };
+            _characters = characters;
+        }
 
         public List<Character> GetAllCharacters()
         {
-            return characters;
+            return _characters;
         }
 
         public Character? GetCharacter(string id)
         {
-            return characters.Find(character => id.Equals($"{character.Id}"));
+            return _characters.Find(character => id.Equals($"{character.Id}"));
         }
     }
 }

@@ -1,5 +1,5 @@
 using FantasyFights.BLL.Services.CharactersService;
-using FantasyFights.DAL.Repositories.CharactersRepository;
+using FantasyFights.DAL.Repositories.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICharactersService, CharactersService>();
-builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 

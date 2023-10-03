@@ -4,26 +4,27 @@ using System.Linq;
 using System.Threading.Tasks;
 using FantasyFights.DAL.Models;
 using FantasyFights.DAL.Repositories.CharactersRepository;
+using FantasyFights.DAL.Repositories.UnitOfWork;
 
 namespace FantasyFights.BLL.Services.CharactersService
 {
     public class CharactersService : ICharactersService
     {
-        private readonly ICharacterRepository _characterRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CharactersService(ICharacterRepository characterRepository)
+        public CharactersService(IUnitOfWork unitOfWork)
         {
-            _characterRepository = characterRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public List<Character> GetAllCharacters()
         {
-            return _characterRepository.GetAllCharacters();
+            return _unitOfWork.CharacterRepository.GetAllCharacters();
         }
 
         public Character GetCharacter(string id)
         {
-            var character = _characterRepository.GetCharacter(id) ?? throw new NullReferenceException("Character with provided id does not exist.");
+            var character = _unitOfWork.CharacterRepository.GetCharacter(id) ?? throw new NullReferenceException("Character with provided id does not exist.");
             return character;
         }
     }
