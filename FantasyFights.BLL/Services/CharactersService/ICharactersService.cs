@@ -9,6 +9,7 @@ namespace FantasyFights.BLL.Services.CharactersService
     public interface ICharactersService
     {
         List<Character> GetAllCharacters();
+
         Character GetCharacter(string id);
     }
 }

@@ -9,6 +9,7 @@ namespace FantasyFights.DAL.Repositories.CharactersRepository
     public interface ICharacterRepository
     {
         List<Character> GetAllCharacters();
+
         Character? GetCharacter(string id);
     }
 }

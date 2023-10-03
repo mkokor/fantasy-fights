@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FantasyFights.DAL\FantasyFights.DAL.csproj" />
     <ProjectReference Include="..\FantasyFights.BLL\FantasyFights.BLL.csproj" />
+    <ProjectReference Include="..\FantasyFights.DAL\FantasyFights.DAL.csproj" />
   </ItemGroup>
 
 </Project>

@@ -22,7 +22,14 @@ namespace FantasyFights.API.Controllers
         [HttpGet]
         public ActionResult<List<Character>> GetAllCharacters()
         {
-            return Ok(_characterService.GetAllCharacters());
+            try
+            {
+                return Ok(_characterService.GetAllCharacters());
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Something went wrong." });
+            }
         }
 
         [HttpGet("{id}")]
@@ -35,6 +42,10 @@ namespace FantasyFights.API.Controllers
             catch (NullReferenceException exception)
             {
                 return NotFound(new { exception.Message });
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Something went wrong." });
             }
         }
     }
