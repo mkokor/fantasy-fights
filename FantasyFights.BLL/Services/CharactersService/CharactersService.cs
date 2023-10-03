@@ -3,38 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FantasyFights.DAL.Models;
+using FantasyFights.DAL.Repositories.CharactersRepository;
 
 namespace FantasyFights.BLL.Services.CharactersService
 {
     public class CharactersService : ICharactersService
     {
-        private static List<Character> characters = new List<Character>
+        private readonly ICharacterRepository _characterRepository;
+
+        public CharactersService(ICharacterRepository characterRepository)
         {
-            new Character
-            {
-                Name = "Asterix"
-            },
-            new Character
-            {
-                Name = "Obelix"
-            }
-        };
+            _characterRepository = characterRepository;
+        }
 
         public List<Character> GetAllCharacters()
         {
-            return characters;
+            return _characterRepository.GetAllCharacters();
         }
 
         public Character GetCharacter(string id)
         {
-            try
-            {
-                return characters.First(character => id.Equals($"{character.Id}"));
-            }
-            catch (InvalidOperationException)
-            {
-                throw new NullReferenceException("Character with provided id does not exist.");
-            }
+            var character = _characterRepository.GetCharacter(id) ?? throw new NullReferenceException("Character with provided id does not exist.");
+            return character;
         }
     }
 }
