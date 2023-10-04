@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FantasyFights.DAL.Models;
 using FantasyFights.BLL.Services.CharactersService;
+using FantasyFights.BLL.DTOs.Character;
 
 namespace FantasyFights.API.Controllers
 {
@@ -20,7 +21,7 @@ namespace FantasyFights.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Character>> GetAllCharacters()
+        public ActionResult<List<CharacterResponseDto>> GetAllCharacters()
         {
             try
             {
@@ -33,7 +34,7 @@ namespace FantasyFights.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Character> GetCharacter(string id)
+        public ActionResult<CharacterResponseDto> GetCharacter(string id)
         {
             try
             {
