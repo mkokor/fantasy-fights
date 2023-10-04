@@ -15,6 +15,7 @@ namespace FantasyFights.DAL.Repositories.UnitOfWork
                 Name = "Asterix"
             },
             new() {
+                Id = 1,
                 Name = "Obelix"
             }
         };

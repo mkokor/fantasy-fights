@@ -14,6 +14,7 @@ namespace FantasyFights.BLL
         public AutoMapperProfile()
         {
             CreateMap<Character, CharacterResponseDto>();
+            CreateMap<CharacterRequestDto, Character>();
         }
     }
 }

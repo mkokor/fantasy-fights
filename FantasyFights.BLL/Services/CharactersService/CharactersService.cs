@@ -32,5 +32,14 @@ namespace FantasyFights.BLL.Services.CharactersService
             var character = _unitOfWork.CharacterRepository.GetCharacter(id) ?? throw new NullReferenceException("Character with provided id does not exist.");
             return _mapper.Map<CharacterResponseDto>(character);
         }
+
+        public CharacterResponseDto CreateCharacter(CharacterRequestDto character)
+        {
+            if (character.Name is null)
+                throw new ArgumentNullException("Character name field is required.");
+            var newCharacter = _mapper.Map<Character>(character);
+            _unitOfWork.CharacterRepository.CreateCharacter(newCharacter);
+            return _mapper.Map<CharacterResponseDto>(newCharacter);
+        }
     }
 }

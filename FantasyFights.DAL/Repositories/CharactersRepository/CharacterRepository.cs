@@ -24,5 +24,12 @@ namespace FantasyFights.DAL.Repositories.CharactersRepository
         {
             return _characters.Find(character => id.Equals($"{character.Id}"));
         }
+
+        public Character CreateCharacter(Character character)
+        {
+            character.Id = _characters.Count;
+            _characters.Add(character);
+            return character;
+        }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using FantasyFights.DAL.Models;
 using FantasyFights.BLL.Services.CharactersService;
 using FantasyFights.BLL.DTOs.Character;
+using System.ComponentModel.DataAnnotations;
 
 namespace FantasyFights.API.Controllers
 {
@@ -34,7 +35,7 @@ namespace FantasyFights.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<CharacterResponseDto> GetCharacter(string id)
+        public ActionResult<CharacterResponseDto> GetCharacter([Required] string id)
         {
             try
             {
@@ -43,6 +44,23 @@ namespace FantasyFights.API.Controllers
             catch (NullReferenceException exception)
             {
                 return NotFound(new { exception.Message });
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Something went wrong." });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult<CharacterResponseDto> CreateCharacter([Required, FromBody] CharacterRequestDto character)
+        {
+            try
+            {
+                return Ok(_characterService.CreateCharacter(character));
+            }
+            catch (ArgumentNullException exception)
+            {
+                return BadRequest(new { Message = exception.ParamName });
             }
             catch (Exception)
             {

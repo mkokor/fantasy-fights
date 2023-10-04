@@ -8,11 +8,11 @@ namespace FantasyFights.BLL.DTOs.Character
 {
     public class CharacterRequestDto
     {
-        public string Name { get; set; } = string.Empty;
-        public int HitPoints { get; set; } = 0;
-        public int Strength { get; set; } = 0;
-        public int Defence { get; set; } = 0;
-        public int Intelligence { get; set; } = 0;
-        public CharacterClass Class { get; set; } = CharacterClass.Knight;
+        public string? Name { get; set; }
+        public int? HitPoints { get; set; }
+        public int? Strength { get; set; }
+        public int? Defence { get; set; }
+        public int? Intelligence { get; set; }
+        public CharacterClass? Class { get; set; } = CharacterClass.Knight;
     }
 }

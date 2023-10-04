@@ -11,5 +11,7 @@ namespace FantasyFights.DAL.Repositories.CharactersRepository
         List<Character> GetAllCharacters();
 
         Character? GetCharacter(string id);
+
+        Character CreateCharacter(Character character);
     }
 }

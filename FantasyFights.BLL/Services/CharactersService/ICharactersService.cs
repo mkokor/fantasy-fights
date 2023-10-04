@@ -12,5 +12,7 @@ namespace FantasyFights.BLL.Services.CharactersService
         List<CharacterResponseDto> GetAllCharacters();
 
         CharacterResponseDto GetCharacter(string id);
+
+        CharacterResponseDto CreateCharacter(CharacterRequestDto character);
     }
 }
