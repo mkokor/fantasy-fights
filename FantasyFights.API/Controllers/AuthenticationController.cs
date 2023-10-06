@@ -30,7 +30,7 @@ namespace FantasyFights.API.Controllers
             }
             catch (NullReferenceException exception)
             {
-                return BadRequest(new { exception.Message });
+                return BadRequest(new { exception });
             }
             catch (Exception)
             {

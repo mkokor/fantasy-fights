@@ -1,3 +1,4 @@
+using FantasyFights.API.Middleware;
 using FantasyFights.BLL.Services.AuthenticationService;
 using FantasyFights.BLL.Services.CharactersService;
 using FantasyFights.DAL;
@@ -29,6 +30,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseJsonFormatValidator();
 
 app.UseAuthorization();
 
