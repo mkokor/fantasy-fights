@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FantasyFights.DAL.Entities
+namespace FantasyFights.BLL.DTOs.User
 {
-    public class User
+    public class UserResponseDto
     {
         public int Id { get; set; }
         public required string Username { get; set; }
-        public string PasswordHash { get; set; } = string.Empty;
     }
 }

@@ -11,8 +11,8 @@ namespace FantasyFights.DAL.Repositories.UnitOfWork
     {
         private readonly DatabaseContext _databaseContext;
 
-        public ICharacterRepository CharacterRepository { get; }
-        public IUserRepository UserRepository { get; }
+        public ICharacterRepository CharacterRepository { get; init; }
+        public IUserRepository UserRepository { get; init; }
 
         public UnitOfWork(DatabaseContext databaseContext)
         {

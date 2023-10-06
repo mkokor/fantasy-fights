@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using AutoMapper;
 using FantasyFights.BLL.DTOs.Character;
+using FantasyFights.BLL.DTOs.User;
 using FantasyFights.DAL.Entities;
 
 namespace FantasyFights.BLL
@@ -15,6 +16,8 @@ namespace FantasyFights.BLL
         {
             CreateMap<Character, CharacterResponseDto>();
             CreateMap<CharacterRequestDto, Character>();
+            CreateMap<UserRegistrationRequestDto, User>();
+            CreateMap<User, UserResponseDto>();
         }
     }
 }
