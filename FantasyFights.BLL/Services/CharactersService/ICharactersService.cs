@@ -9,10 +9,10 @@ namespace FantasyFights.BLL.Services.CharactersService
 {
     public interface ICharactersService
     {
-        List<CharacterResponseDto> GetAllCharacters();
+        Task<List<CharacterResponseDto>> GetAllCharacters();
 
-        CharacterResponseDto GetCharacter(string id);
+        Task<CharacterResponseDto> GetCharacter(string id);
 
-        CharacterResponseDto CreateCharacter(CharacterRequestDto character);
+        Task<CharacterResponseDto> CreateCharacter(CharacterRequestDto character);
     }
 }

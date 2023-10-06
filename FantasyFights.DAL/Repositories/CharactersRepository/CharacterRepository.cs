@@ -3,32 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FantasyFights.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FantasyFights.DAL.Repositories.CharactersRepository
 {
     public class CharacterRepository : ICharacterRepository
     {
-        private static List<Character> _characters = new();
+        private readonly DatabaseContext _databaseContext;
 
-        public CharacterRepository(List<Character> characters)
+        public CharacterRepository(DatabaseContext databaseContext)
         {
-            _characters = characters;
+            _databaseContext = databaseContext;
         }
 
-        public List<Character> GetAllCharacters()
+        public async Task<List<Character>> GetAllCharacters()
         {
-            return _characters;
+            return await _databaseContext.Characters.ToListAsync();
         }
 
-        public Character? GetCharacter(string id)
+        public async Task<Character?> GetCharacter(int id)
         {
-            return _characters.Find(character => id.Equals($"{character.Id}"));
+            return await _databaseContext.Characters.FindAsync(id);
         }
 
-        public Character CreateCharacter(Character character)
+        public async Task<Character> CreateCharacter(Character character)
         {
-            character.Id = _characters.Count;
-            _characters.Add(character);
+            await _databaseContext.Characters.AddAsync(character);
             return character;
         }
     }

@@ -22,11 +22,11 @@ namespace FantasyFights.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<CharacterResponseDto>> GetAllCharacters()
+        public async Task<ActionResult<List<CharacterResponseDto>>> GetAllCharacters()
         {
             try
             {
-                return Ok(_characterService.GetAllCharacters());
+                return Ok(await _characterService.GetAllCharacters());
             }
             catch (Exception)
             {
@@ -35,11 +35,11 @@ namespace FantasyFights.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<CharacterResponseDto> GetCharacter([Required] string id)
+        public async Task<ActionResult<CharacterResponseDto>> GetCharacter([Required] string id)
         {
             try
             {
-                return Ok(_characterService.GetCharacter(id));
+                return Ok(await _characterService.GetCharacter(id));
             }
             catch (NullReferenceException exception)
             {
@@ -52,11 +52,11 @@ namespace FantasyFights.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<CharacterResponseDto> CreateCharacter([Required, FromBody] CharacterRequestDto character)
+        public async Task<ActionResult<CharacterResponseDto>> CreateCharacter([Required, FromBody] CharacterRequestDto character)
         {
             try
             {
-                return Ok(_characterService.CreateCharacter(character));
+                return Ok(await _characterService.CreateCharacter(character));
             }
             catch (ArgumentNullException exception)
             {

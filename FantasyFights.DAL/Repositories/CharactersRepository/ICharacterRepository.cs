@@ -8,10 +8,10 @@ namespace FantasyFights.DAL.Repositories.CharactersRepository
 {
     public interface ICharacterRepository
     {
-        List<Character> GetAllCharacters();
+        Task<List<Character>> GetAllCharacters();
 
-        Character? GetCharacter(string id);
+        Task<Character?> GetCharacter(int id);
 
-        Character CreateCharacter(Character character);
+        Task<Character> CreateCharacter(Character character);
     }
 }

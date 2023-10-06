@@ -9,5 +9,7 @@ namespace FantasyFights.DAL.Repositories.UnitOfWork
     public interface IUnitOfWork
     {
         ICharacterRepository CharacterRepository { get; }
+
+        Task SaveAsync();
     }
 }
