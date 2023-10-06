@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using FantasyFights.DAL.Other;
 
-namespace FantasyFights.DAL.Models
+namespace FantasyFights.DAL.Entities
 {
     public class Character
     {
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public required string Name { get; set; }
         public int HitPoints { get; set; }
         public int Strength { get; set; }
         public int Defence { get; set; }

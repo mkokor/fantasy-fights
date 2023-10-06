@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FantasyFights.DAL.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231006103601_InitialMigration")]
+    [Migration("20231006114513_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -24,7 +24,7 @@ namespace FantasyFights.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("FantasyFights.DAL.Models.Character", b =>
+            modelBuilder.Entity("FantasyFights.DAL.Entities.Character", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,6 +54,27 @@ namespace FantasyFights.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Characters");
+                });
+
+            modelBuilder.Entity("FantasyFights.DAL.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

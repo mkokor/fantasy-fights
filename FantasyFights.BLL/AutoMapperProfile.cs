@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using AutoMapper;
 using FantasyFights.BLL.DTOs.Character;
-using FantasyFights.DAL.Models;
+using FantasyFights.DAL.Entities;
 
 namespace FantasyFights.BLL
 {

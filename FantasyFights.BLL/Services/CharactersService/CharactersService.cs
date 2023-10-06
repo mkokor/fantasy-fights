@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FantasyFights.BLL.DTOs.Character;
-using FantasyFights.DAL.Models;
-using FantasyFights.DAL.Repositories.CharactersRepository;
+using FantasyFights.DAL.Entities;
+using FantasyFights.DAL.Repositories.CharacterRepository;
 using FantasyFights.DAL.Repositories.UnitOfWork;
 
 namespace FantasyFights.BLL.Services.CharactersService

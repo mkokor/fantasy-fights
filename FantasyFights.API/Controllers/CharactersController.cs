@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using FantasyFights.DAL.Models;
 using FantasyFights.BLL.Services.CharactersService;
 using FantasyFights.BLL.DTOs.Character;
 using System.ComponentModel.DataAnnotations;

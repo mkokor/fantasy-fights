@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FantasyFights.BLL.DTOs.Character;
-using FantasyFights.DAL.Models;
 
 namespace FantasyFights.BLL.Services.CharactersService
 {
