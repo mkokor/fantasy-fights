@@ -1,9 +1,13 @@
 using FantasyFights.BLL.Services.CharactersService;
+using FantasyFights.DAL;
 using FantasyFights.DAL.Repositories.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICharactersService, CharactersService>();
 
