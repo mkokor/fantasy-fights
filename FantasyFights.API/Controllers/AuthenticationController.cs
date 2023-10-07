@@ -28,9 +28,9 @@ namespace FantasyFights.API.Controllers
             {
                 return await _authenticationService.RegisterUser(userRegistrationRequestDto);
             }
-            catch (NullReferenceException exception)
+            catch (ArgumentException exception)
             {
-                return BadRequest(new { exception });
+                return BadRequest(new { exception.Message });
             }
             catch (Exception)
             {
