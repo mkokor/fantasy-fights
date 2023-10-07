@@ -8,6 +8,7 @@ using AutoMapper;
 using FantasyFights.BLL.DTOs.User;
 using FantasyFights.BLL.Utilities;
 using FantasyFights.DAL.Entities;
+using FantasyFights.DAL.Other.Email;
 using FantasyFights.DAL.Repositories.UnitOfWork;
 
 namespace FantasyFights.BLL.Services.AuthenticationService
@@ -54,13 +55,30 @@ namespace FantasyFights.BLL.Services.AuthenticationService
                 throw new ArgumentException("Provided username is not available.");
         }
 
+        private EmailConfiguration ConfigurateEmailData(List<Recipient> recipients, string subject, string body)
+        {
+            // This is method is customized for this application.
+            return new EmailConfiguration
+            {
+                Host = EnvironmentUtility.GetEnvironmentVariable("EMAIL_HOST"),
+                Port = int.Parse(EnvironmentUtility.GetEnvironmentVariable("EMAIL_PORT")),
+                Sender = new Sender
+                {
+                    Address = EnvironmentUtility.GetEnvironmentVariable("EMAIL_ADDRESS"),
+                    Password = EnvironmentUtility.GetEnvironmentVariable("EMAIL_PASSWORD")
+                },
+                Recipients = recipients,
+                Subject = subject,
+                Body = body
+            };
+        }
+
         public async Task<UserResponseDto> RegisterUser(UserRegistrationRequestDto userRegistrationRequestDto)
         {
-            //await ValidateEmail(userRegistrationRequestDto.Email);
-            //await ValidateUsername(userRegistrationRequestDto.Username);
-            //ValidatePasswordStrength(userRegistrationRequestDto.Password);
-            // Send confirmation email message!
-            EmailUtility.SendEmail();
+            await ValidateEmail(userRegistrationRequestDto.Email);
+            await ValidateUsername(userRegistrationRequestDto.Username);
+            ValidatePasswordStrength(userRegistrationRequestDto.Password);
+            EmailUtility.SendEmail(ConfigurateEmailData(new List<Recipient> { new() { Address = userRegistrationRequestDto.Email } }, "Test", "This is test."));
             var user = _mapper.Map<User>(userRegistrationRequestDto);
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userRegistrationRequestDto.Password);
             await _unitOfWork.UserRepository.CreateUser(user);
