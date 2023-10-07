@@ -17,6 +17,14 @@ namespace FantasyFights.API.Middleware
             _next = next;
         }
 
+        private static async Task SendErrorResponse(HttpContext httpContext, string errorMessage)
+        {
+            httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+            var responseBody = JsonSerializer.Serialize(new { message = errorMessage });
+            httpContext.Response.ContentType = "application/json; charset=UTF-8";
+            await httpContext.Response.WriteAsync(responseBody);
+        }
+
         public async Task InvokeAsync(HttpContext httpContext)
         {
             if (httpContext.Request.Path.Equals("/api/authentication/sign-up"))
@@ -30,20 +38,14 @@ namespace FantasyFights.API.Middleware
                         var requestBodyJson = JsonSerializer.Deserialize<UserRegistrationRequestDto>(requestBodyString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                         if (requestBodyJson is null || requestBodyJson.Username is null || requestBodyJson.Password is null)
                         {
-                            httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                            var responseBody = JsonSerializer.Serialize(new { message = "Username and password are required fields." });
-                            httpContext.Response.ContentType = "application/json; charset=UTF-8";
-                            await httpContext.Response.WriteAsync(responseBody);
+                            await SendErrorResponse(httpContext, "Username and password are required fields.");
                             return;
                         }
                         httpContext.Request.Body = new MemoryStream(Encoding.UTF8.GetBytes(requestBodyString));
                     }
                     catch (Exception)
                     {
-                        httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                        var responseBody = JsonSerializer.Serialize(new { message = "Required request body format is JSON." });
-                        httpContext.Response.ContentType = "application/json; charset=UTF-8";
-                        await httpContext.Response.WriteAsync(responseBody);
+                        await SendErrorResponse(httpContext, "Required request body format is JSON.");
                         return;
                     }
                 }
