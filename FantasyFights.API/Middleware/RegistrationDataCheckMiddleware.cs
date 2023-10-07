@@ -35,16 +35,11 @@ namespace FantasyFights.API.Middleware
                 try
                 {
                     var requestBodyJson = JsonSerializer.Deserialize<UserRegistrationRequestDto>(requestBodyString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    if (requestBodyJson is null || requestBodyJson.Username is null || requestBodyJson.Password is null)
-                    {
-                        await SendErrorResponse(httpContext, "Username and password are required fields.");
-                        return;
-                    }
                     httpContext.Request.Body = new MemoryStream(Encoding.UTF8.GetBytes(requestBodyString));
                 }
                 catch (Exception)
                 {
-                    await SendErrorResponse(httpContext, "Required request body format is JSON.");
+                    await SendErrorResponse(httpContext, "Provide username and password in JSON format.");
                     return;
                 }
             }
