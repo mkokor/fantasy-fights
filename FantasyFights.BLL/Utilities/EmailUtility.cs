@@ -27,13 +27,14 @@ namespace FantasyFights.BLL.Utilities
         public static void SendEmail()
         {
             var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse("brennan46@ethereal.email"));
-            email.To.Add(MailboxAddress.Parse("brennan46@ethereal.email"));
+            email.From.Add(MailboxAddress.Parse("matijakokorr@gmail.com"));
+            email.To.Add(MailboxAddress.Parse("mkokor2@etf.unsa.ba"));
             email.Subject = "Test";
             email.Body = new TextPart(TextFormat.Html) { Text = "This is a test." };
             using var smtp = new MailKit.Net.Smtp.SmtpClient();
-            smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
-            smtp.Authenticate("brennan46@ethereal.email", "em2qJpJyKtzMjHVnr5");
+            smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+            var emailPassword = Environment.GetEnvironmentVariable("EMAIL_PASSWORD");
+            smtp.Authenticate("matijakokorr@gmail.com", emailPassword);
             smtp.Send(email);
             smtp.Disconnect(true);
         }

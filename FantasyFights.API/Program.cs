@@ -5,6 +5,8 @@ using FantasyFights.DAL;
 using FantasyFights.DAL.Repositories.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 
+DotNetEnv.Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
