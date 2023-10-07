@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using FantasyFights.DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace FantasyFights.DAL.Repositories.UserRepository
 {
@@ -19,6 +21,11 @@ namespace FantasyFights.DAL.Repositories.UserRepository
         {
             await _databaseContext.Users.AddAsync(user);
             return user;
+        }
+
+        public async Task<List<User>> GetAllUsers()
+        {
+            return await _databaseContext.Users.ToListAsync();
         }
     }
 }
