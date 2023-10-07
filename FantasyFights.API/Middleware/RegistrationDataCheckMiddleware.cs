@@ -39,7 +39,7 @@ namespace FantasyFights.API.Middleware
                 }
                 catch (Exception)
                 {
-                    await SendErrorResponse(httpContext, "Provide username and password in JSON format.");
+                    await SendErrorResponse(httpContext, "Provide email, username and password in JSON format.");
                     return;
                 }
             }
