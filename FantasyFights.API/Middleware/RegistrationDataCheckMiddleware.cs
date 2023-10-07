@@ -30,8 +30,7 @@ namespace FantasyFights.API.Middleware
         {
             if (httpContext.Request.Path.Equals("/api/authentication/sign-up"))
             {
-                var requestBody = httpContext.Request.Body;
-                using StreamReader streamReader = new(requestBody);
+                using StreamReader streamReader = new(httpContext.Request.Body);
                 var requestBodyString = await streamReader.ReadToEndAsync();
                 try
                 {
