@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using FantasyFights.BLL.DTOs.User;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyFights.API.Middleware
 {
@@ -30,27 +31,25 @@ namespace FantasyFights.API.Middleware
             if (httpContext.Request.Path.Equals("/api/authentication/sign-up"))
             {
                 var requestBody = httpContext.Request.Body;
-                using (StreamReader streamReader = new(requestBody))
+                using StreamReader streamReader = new(requestBody);
+                var requestBodyString = await streamReader.ReadToEndAsync();
+                try
                 {
-                    var requestBodyString = await streamReader.ReadToEndAsync();
-                    try
+                    var requestBodyJson = JsonSerializer.Deserialize<UserRegistrationRequestDto>(requestBodyString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    if (requestBodyJson is null || requestBodyJson.Username is null || requestBodyJson.Password is null)
                     {
-                        var requestBodyJson = JsonSerializer.Deserialize<UserRegistrationRequestDto>(requestBodyString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                        if (requestBodyJson is null || requestBodyJson.Username is null || requestBodyJson.Password is null)
-                        {
-                            await SendErrorResponse(httpContext, "Username and password are required fields.");
-                            return;
-                        }
-                        httpContext.Request.Body = new MemoryStream(Encoding.UTF8.GetBytes(requestBodyString));
-                    }
-                    catch (Exception)
-                    {
-                        await SendErrorResponse(httpContext, "Required request body format is JSON.");
+                        await SendErrorResponse(httpContext, "Username and password are required fields.");
                         return;
                     }
+                    httpContext.Request.Body = new MemoryStream(Encoding.UTF8.GetBytes(requestBodyString));
                 }
-                await _next(httpContext);
+                catch (Exception)
+                {
+                    await SendErrorResponse(httpContext, "Required request body format is JSON.");
+                    return;
+                }
             }
+            await _next(httpContext);
         }
     }
 
