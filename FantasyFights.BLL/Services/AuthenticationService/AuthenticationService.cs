@@ -22,8 +22,6 @@ namespace FantasyFights.BLL.Services.AuthenticationService
 
         public async Task<UserResponseDto> RegisterUser(UserRegistrationRequestDto userRegistrationRequestDto)
         {
-            if (userRegistrationRequestDto.Username is null || userRegistrationRequestDto.Password is null)
-                throw new NullReferenceException("Username and password are required fields.");
             var user = _mapper.Map<User>(userRegistrationRequestDto);
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userRegistrationRequestDto.Password);
             await _unitOfWork.UserRepository.CreateUser(user);

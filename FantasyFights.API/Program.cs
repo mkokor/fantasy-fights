@@ -31,7 +31,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseJsonFormatValidator();
+app.UseRegistrationDataCheck();
 
 app.UseAuthorization();
 
