@@ -56,10 +56,10 @@ namespace FantasyFights.BLL.Services.AuthenticationService
 
         public async Task<UserResponseDto> RegisterUser(UserRegistrationRequestDto userRegistrationRequestDto)
         {
-            //await ValidateEmail(userRegistrationRequestDto.Email);
-            //await ValidateUsername(userRegistrationRequestDto.Username);
-            //ValidatePasswordStrength(userRegistrationRequestDto.Password);
-            EmailUtility.SendEmail();
+            await ValidateEmail(userRegistrationRequestDto.Email);
+            await ValidateUsername(userRegistrationRequestDto.Username);
+            ValidatePasswordStrength(userRegistrationRequestDto.Password);
+            // Send confirmation email message!
             var user = _mapper.Map<User>(userRegistrationRequestDto);
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userRegistrationRequestDto.Password);
             await _unitOfWork.UserRepository.CreateUser(user);
