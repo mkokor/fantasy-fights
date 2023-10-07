@@ -32,9 +32,9 @@ namespace FantasyFights.API.Controllers
             {
                 return BadRequest(new { exception.Message });
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Something went wrong." });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = exception.Message });
             }
         }
     }
