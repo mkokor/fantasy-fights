@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FantasyFights.DAL.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231007131946_InitialMigration")]
+    [Migration("20231008112029_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -67,6 +67,9 @@ namespace FantasyFights.DAL.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()

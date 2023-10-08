@@ -44,7 +44,7 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
             // minimum one special character
             if (PasswordStrengthValidation().IsMatch(password))
                 return;
-            throw new Exception("Password needs to contain minimum of 8 characters, one digit and one special character!");
+            throw new ArgumentException("Password needs to contain minimum of 8 characters, including one digit and one special character!");
         }
 
         private static EmailConfiguration ConfigurateEmailData(List<Recipient> recipients, string subject, string body)
@@ -65,9 +65,15 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
             };
         }
 
+        private string CreateEmailVerificationToken()
+        {
+            return CryptoUtility.GenerateRandomString();
+        }
+
         private void SendConfirmationEmail(Recipient recipient)
         {
-            EmailUtility.SendEmail(ConfigurateEmailData(new List<Recipient> { recipient }, "Test", "This is test."));
+            string emailVerificationToken = CreateEmailVerificationToken();
+            EmailUtility.SendEmail(ConfigurateEmailData(new List<Recipient> { recipient }, "Account Confirmation", $"Verification token: ${emailVerificationToken}"));
         }
 
         public async Task<UserResponseDto> RegisterUser(UserRegistrationRequestDto userRegistrationRequestDto)
@@ -77,7 +83,7 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
             ValidatePasswordStrength(userRegistrationRequestDto.Password);
             SendConfirmationEmail(new Recipient { Address = userRegistrationRequestDto.Email });
             var user = _mapper.Map<User>(userRegistrationRequestDto);
-            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userRegistrationRequestDto.Password);
+            user.PasswordHash = CryptoUtility.Hash(userRegistrationRequestDto.Password);
             await _unitOfWork.UserRepository.CreateUser(user);
             await _unitOfWork.SaveAsync();
             return _mapper.Map<UserResponseDto>(user);

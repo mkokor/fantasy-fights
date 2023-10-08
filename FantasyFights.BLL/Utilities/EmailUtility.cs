@@ -15,7 +15,7 @@ namespace FantasyFights.BLL.Utilities
         private static MimeMessage ConfigureEmail(EmailConfiguration emailConfiguration)
         {
             var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse(emailConfiguration.Sender.Address));
+            email.From.Add(new MailboxAddress("Fantasy Fights", emailConfiguration.Sender.Address));
             emailConfiguration.Recipients.ForEach(recipient => email.To.Add(MailboxAddress.Parse(recipient.Address)));
             email.Subject = emailConfiguration.Subject;
             email.Body = new TextPart(TextFormat.Html) { Text = emailConfiguration.Body };
