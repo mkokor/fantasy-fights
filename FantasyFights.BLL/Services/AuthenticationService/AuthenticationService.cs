@@ -57,7 +57,7 @@ namespace FantasyFights.BLL.Services.AuthenticationService
 
         private EmailConfiguration ConfigurateEmailData(List<Recipient> recipients, string subject, string body)
         {
-            // This is method is customized for this application.
+            // This method is customized for this application.
             return new EmailConfiguration
             {
                 Host = EnvironmentUtility.GetEnvironmentVariable("EMAIL_HOST"),
