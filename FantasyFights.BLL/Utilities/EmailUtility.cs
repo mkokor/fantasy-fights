@@ -12,10 +12,21 @@ namespace FantasyFights.BLL.Utilities
 {
     public class EmailUtility
     {
-        public static bool IsValidEmail(string value)
+        private static MimeMessage ConfigureEmail(EmailConfiguration emailConfiguration)
+        {
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse(emailConfiguration.Sender.Address));
+            emailConfiguration.Recipients.ForEach(recipient => email.To.Add(MailboxAddress.Parse(recipient.Address)));
+            email.Subject = emailConfiguration.Subject;
+            email.Body = new TextPart(TextFormat.Html) { Text = emailConfiguration.Body };
+            return email;
+        }
+
+        public static bool IsValid(string value)
         {
             try
             {
+                // Use email verification API for complete verification
                 _ = new MailAddress(value);
                 return true;
             }
@@ -27,16 +38,18 @@ namespace FantasyFights.BLL.Utilities
 
         public static void SendEmail(EmailConfiguration emailConfiguration)
         {
-            var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse(emailConfiguration.Sender.Address));
-            emailConfiguration.Recipients.ForEach(recipient => email.To.Add(MailboxAddress.Parse(recipient.Address)));
-            email.Subject = emailConfiguration.Subject;
-            email.Body = new TextPart(TextFormat.Html) { Text = emailConfiguration.Body };
-            using var smtp = new MailKit.Net.Smtp.SmtpClient();
-            smtp.Connect(emailConfiguration.Host, emailConfiguration.Port, SecureSocketOptions.StartTls);
-            smtp.Authenticate(emailConfiguration.Sender.Address, emailConfiguration.Sender.Password);
-            smtp.Send(email);
-            smtp.Disconnect(true);
+            using var smtpClient = new MailKit.Net.Smtp.SmtpClient();
+            try
+            {
+                smtpClient.Connect(emailConfiguration.Host, emailConfiguration.Port, SecureSocketOptions.StartTls);
+                smtpClient.Authenticate(emailConfiguration.Sender.Address, emailConfiguration.Sender.Password);
+                smtpClient.Send(ConfigureEmail(emailConfiguration));
+                smtpClient.Disconnect(true);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Something went wrong.");
+            }
         }
     }
 }

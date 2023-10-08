@@ -39,7 +39,7 @@ namespace FantasyFights.BLL.Services.AuthenticationService
 
         private async Task ValidateEmail(string email)
         {
-            if (!EmailUtility.IsValidEmail(email))
+            if (!EmailUtility.IsValid(email))
                 throw new ArgumentException("Format of provided email is not recognized.");
             var allUsers = await _unitOfWork.UserRepository.GetAllUsers();
             if (allUsers.FirstOrDefault(user => user.Email.Equals(email)) != null)
