@@ -65,15 +65,16 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
             };
         }
 
-        private string CreateEmailVerificationToken()
+        private int CreateEmailVerificationToken()
         {
-            return CryptoUtility.GenerateRandomString();
+            var random = new Random();
+            return random.Next(100000, 999999);
         }
 
         private void SendConfirmationEmail(Recipient recipient)
         {
-            string emailVerificationToken = CreateEmailVerificationToken();
-            EmailUtility.SendEmail(ConfigurateEmailData(new List<Recipient> { recipient }, "Account Confirmation", $"Verification token: ${emailVerificationToken}"));
+            int emailVerificationToken = CreateEmailVerificationToken();
+            EmailUtility.SendEmail(ConfigurateEmailData(new List<Recipient> { recipient }, "Account Confirmation", $"Verification token: {emailVerificationToken}"));
         }
 
         public async Task<UserResponseDto> RegisterUser(UserRegistrationRequestDto userRegistrationRequestDto)
