@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FantasyFights.BLL.DTOs.User;
 using FantasyFights.BLL.Services.AuthenticationService;
+using FantasyFights.BLL.Services.UserRegistrationService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -15,10 +16,12 @@ namespace FantasyFights.API.Controllers
     public class AuthenticationController : Controller
     {
         private readonly IAuthenticationService _authenticationService;
+        private readonly IUserRegistrationService _userRegistrationService;
 
-        public AuthenticationController(IAuthenticationService authenticationService)
+        public AuthenticationController(IAuthenticationService authenticationService, IUserRegistrationService userRegistrationService)
         {
             _authenticationService = authenticationService;
+            _userRegistrationService = userRegistrationService;
         }
 
         [HttpPost("sign-up")]
@@ -26,7 +29,7 @@ namespace FantasyFights.API.Controllers
         {
             try
             {
-                return await _authenticationService.RegisterUser(userRegistrationRequestDto);
+                return await _userRegistrationService.RegisterUser(userRegistrationRequestDto);
             }
             catch (ArgumentException exception)
             {

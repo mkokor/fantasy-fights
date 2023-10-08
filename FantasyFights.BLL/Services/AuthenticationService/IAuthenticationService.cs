@@ -8,6 +8,5 @@ namespace FantasyFights.BLL.Services.AuthenticationService
 {
     public interface IAuthenticationService
     {
-        Task<UserResponseDto> RegisterUser(UserRegistrationRequestDto userRegistrationRequestDto);
     }
 }

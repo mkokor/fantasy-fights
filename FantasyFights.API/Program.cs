@@ -1,6 +1,7 @@
 using FantasyFights.API.Middleware;
 using FantasyFights.BLL.Services.AuthenticationService;
 using FantasyFights.BLL.Services.CharactersService;
+using FantasyFights.BLL.Services.UserRegistrationService;
 using FantasyFights.DAL;
 using FantasyFights.DAL.Repositories.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(b
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICharactersService, CharactersService>();
+builder.Services.AddScoped<IUserRegistrationService, UserRegistrationService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
