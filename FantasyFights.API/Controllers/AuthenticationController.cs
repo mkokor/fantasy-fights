@@ -1,20 +1,13 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using FantasyFights.BLL.DTOs.EmailConfirmation;
 using FantasyFights.BLL.DTOs.User;
 using FantasyFights.BLL.Services.AuthenticationService;
 using FantasyFights.BLL.Services.UserRegistrationService;
-using FantasyFights.DAL.Repositories.EmailConfirmationCodeRepository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace FantasyFights.API.Controllers
 {
-    [Route("api/authentication")]
+    [Route("api/auth")]
     public class AuthenticationController : Controller
     {
         private readonly IAuthenticationService _authenticationService;
