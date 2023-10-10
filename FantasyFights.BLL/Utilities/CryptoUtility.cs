@@ -17,5 +17,10 @@ namespace FantasyFights.BLL.Utilities
         {
             return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         }
+
+        public static bool Compare(string value, string hash)
+        {
+            return BCrypt.Net.BCrypt.Verify(hash, value);
+        }
     }
 }

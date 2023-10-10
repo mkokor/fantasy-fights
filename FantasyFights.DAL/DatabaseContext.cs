@@ -11,7 +11,7 @@ namespace FantasyFights.DAL
     {
         public DbSet<User> Users { get; private set; }
         public DbSet<Character> Characters { get; private set; }
-        public DbSet<EmailVerificationCode> EmailVerificationCodes { get; private set; }
+        public DbSet<EmailConfirmationCode> EmailConfirmationCodes { get; private set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
     }

@@ -27,5 +27,15 @@ namespace FantasyFights.DAL.Repositories.UserRepository
         {
             return await _databaseContext.Users.ToListAsync();
         }
+
+        public async Task<User?> GetUserByEmail(string email)
+        {
+            return await _databaseContext.Users.FirstOrDefaultAsync(user => user.Email.Equals(email));
+        }
+
+        public async Task<User?> GetUserById(int id)
+        {
+            return await _databaseContext.Users.FindAsync(id);
+        }
     }
 }

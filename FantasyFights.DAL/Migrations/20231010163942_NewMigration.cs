@@ -46,7 +46,7 @@ namespace FantasyFights.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmailVerificationCodes",
+                name: "EmailConfirmationCodes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -57,9 +57,9 @@ namespace FantasyFights.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmailVerificationCodes", x => x.Id);
+                    table.PrimaryKey("PK_EmailConfirmationCodes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EmailVerificationCodes_Users_OwnerId",
+                        name: "FK_EmailConfirmationCodes_Users_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -67,8 +67,8 @@ namespace FantasyFights.DAL.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmailVerificationCodes_OwnerId",
-                table: "EmailVerificationCodes",
+                name: "IX_EmailConfirmationCodes_OwnerId",
+                table: "EmailConfirmationCodes",
                 column: "OwnerId");
         }
 
@@ -79,7 +79,7 @@ namespace FantasyFights.DAL.Migrations
                 name: "Characters");
 
             migrationBuilder.DropTable(
-                name: "EmailVerificationCodes");
+                name: "EmailConfirmationCodes");
 
             migrationBuilder.DropTable(
                 name: "Users");

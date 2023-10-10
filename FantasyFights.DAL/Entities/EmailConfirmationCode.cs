@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FantasyFights.DAL.Entities
 {
-    public class EmailVerificationCode
+    public class EmailConfirmationCode
     {
         public int Id { get; set; }
         public required string ValueHash { get; set; }

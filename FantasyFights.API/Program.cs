@@ -37,6 +37,10 @@ app.UseHttpsRedirection();
 
 app.UseRegistrationDataCheck();
 
+app.UseEmailConfirmationDataCheck();
+
+app.UseEmailConfirmationCodeRequestDataCheck();
+
 app.UseAuthorization();
 
 app.MapControllers();

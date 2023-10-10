@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using AutoMapper;
+using FantasyFights.BLL.DTOs.EmailConfirmation;
 using FantasyFights.BLL.DTOs.User;
 using FantasyFights.BLL.Utilities;
 using FantasyFights.DAL.Entities;
@@ -65,28 +66,33 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
             };
         }
 
-        private async Task<string> CreateOrUpdateEmailVerificationCode(User user)
+        private async Task<string> CreateOrUpdateEmailConfirmationCode(User user)
         {
             var randomNumberGenerator = new Random();
-            var emailVerificationCodeValue = $"{randomNumberGenerator.Next(100000, 999999)}";
-            var emailVerificationCode = await _unitOfWork.EmailVerificationCodeRepository.GetEmailVerificationCodeByOwnerId(user.Id);
-            if (emailVerificationCode is null)
-                await _unitOfWork.EmailVerificationCodeRepository.CreateEmailVerificationCode(new EmailVerificationCode
+            var emailConfirmationCodeValue = $"{randomNumberGenerator.Next(100000, 999999)}";
+            var emailConfirmationCode = await _unitOfWork.EmailConfirmationCodeRepository.GetEmailConfirmationCodeByOwnerId(user.Id);
+            if (emailConfirmationCode is null)
+                await _unitOfWork.EmailConfirmationCodeRepository.CreateEmailConfirmationCode(new EmailConfirmationCode
                 {
-                    ValueHash = CryptoUtility.Hash(emailVerificationCodeValue),
+                    ValueHash = CryptoUtility.Hash(emailConfirmationCodeValue),
                     ExpirationDateAndTime = DateTime.Now.AddMinutes(15),
                     OwnerId = user.Id
                 });
             else
-                emailVerificationCode.ValueHash = CryptoUtility.Hash(emailVerificationCodeValue);
+            {
+                emailConfirmationCode.ValueHash = CryptoUtility.Hash(emailConfirmationCodeValue);
+                emailConfirmationCode.ExpirationDateAndTime = DateTime.Now.AddMinutes(15);
+            }
             await _unitOfWork.SaveAsync();
-            return emailVerificationCodeValue;
+            return emailConfirmationCodeValue;
         }
 
-        private async Task SendConfirmationEmail(User recipient)
+        private void VerifyEmailConfirmationCode(string acceptedValue, EmailConfirmationCode realData)
         {
-            var emailVerificationCode = await CreateOrUpdateEmailVerificationCode(recipient);
-            EmailUtility.SendEmail(ConfigurateEmailData(new List<Recipient> { new() { Address = recipient.Email } }, "Account Confirmation", $"Verification token: {emailVerificationCode}"));
+            if (!CryptoUtility.Compare(realData.ValueHash, acceptedValue))
+                throw new ArgumentException("Confirmation code is incorrect.");
+            if (realData.ExpirationDateAndTime < DateTime.Now)
+                throw new ArgumentException("Confirmation code has expired.");
         }
 
         public async Task<UserResponseDto> RegisterUser(UserRegistrationRequestDto userRegistrationRequestDto)
@@ -98,8 +104,25 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
             user.PasswordHash = CryptoUtility.Hash(userRegistrationRequestDto.Password);
             await _unitOfWork.UserRepository.CreateUser(user);
             await _unitOfWork.SaveAsync();
-            await SendConfirmationEmail(user);
+            await SendConfirmationEmail(user.Email);
             return _mapper.Map<UserResponseDto>(user);
+        }
+
+        public async Task SendConfirmationEmail(string email)
+        {
+            var recipient = await _unitOfWork.UserRepository.GetUserByEmail(email) ?? throw new NullReferenceException("User with provided email does not exist.");
+            var emailConfirmationCode = await CreateOrUpdateEmailConfirmationCode(recipient);
+            EmailUtility.SendEmail(ConfigurateEmailData(new List<Recipient> { new() { Address = recipient.Email } }, "Account Confirmation", $"Confirmation code: {emailConfirmationCode}"));
+        }
+
+        public async Task ConfirmEmail(EmailConfirmationRequestDto emailConfirmationRequestDto)
+        {
+            var user = await _unitOfWork.UserRepository.GetUserByEmail(emailConfirmationRequestDto.Email) ?? throw new NullReferenceException("User with provided email does not exist.");
+            var emailConfirmationCode = await _unitOfWork.EmailConfirmationCodeRepository.GetEmailConfirmationCodeByOwnerId(user.Id) ?? throw new NullReferenceException("Confirmation code could not be found.");
+            VerifyEmailConfirmationCode(emailConfirmationRequestDto.ConfirmationCode, emailConfirmationCode);
+            user.EmailConfirmed = true;
+            _unitOfWork.EmailConfirmationCodeRepository.DeleteEmailConfirmationCode(emailConfirmationCode);
+            await _unitOfWork.SaveAsync();
         }
 
         [GeneratedRegex("^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$")]

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FantasyFights.DAL.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231010153120_NewMigration")]
+    [Migration("20231010163942_NewMigration")]
     partial class NewMigration
     {
         /// <inheritdoc />
@@ -57,7 +57,7 @@ namespace FantasyFights.DAL.Migrations
                     b.ToTable("Characters");
                 });
 
-            modelBuilder.Entity("FantasyFights.DAL.Entities.EmailVerificationCode", b =>
+            modelBuilder.Entity("FantasyFights.DAL.Entities.EmailConfirmationCode", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -79,7 +79,7 @@ namespace FantasyFights.DAL.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("EmailVerificationCodes");
+                    b.ToTable("EmailConfirmationCodes");
                 });
 
             modelBuilder.Entity("FantasyFights.DAL.Entities.User", b =>
@@ -110,7 +110,7 @@ namespace FantasyFights.DAL.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("FantasyFights.DAL.Entities.EmailVerificationCode", b =>
+            modelBuilder.Entity("FantasyFights.DAL.Entities.EmailConfirmationCode", b =>
                 {
                     b.HasOne("FantasyFights.DAL.Entities.User", "Owner")
                         .WithMany()

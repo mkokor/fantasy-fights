@@ -11,5 +11,9 @@ namespace FantasyFights.DAL.Repositories.UserRepository
         Task<User> CreateUser(User user);
 
         Task<List<User>> GetAllUsers();
+
+        Task<User?> GetUserByEmail(string email);
+
+        Task<User?> GetUserById(int id);
     }
 }
