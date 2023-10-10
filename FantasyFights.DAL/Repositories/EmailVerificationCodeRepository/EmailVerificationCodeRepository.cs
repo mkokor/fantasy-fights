@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using FantasyFights.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +20,14 @@ namespace FantasyFights.DAL.Repositories.EmailVerificationCodeRepository
 
         public async Task<List<EmailVerificationCode>> GetAllEmailVerificationCodes()
         {
-            return await _databaseContext.EmailVerificationCodes.ToListAsync();
+            return await _databaseContext.EmailVerificationCodes.Include(code => code.Owner)
+                                                                .ToListAsync();
+        }
+
+        public async Task<EmailVerificationCode?> GetEmailVerificationCodeByOwnerId(int ownerId)
+        {
+            return await _databaseContext.EmailVerificationCodes.Include(code => code.Owner)
+                                                                .FirstOrDefaultAsync(code => code.OwnerId == ownerId);
         }
     }
 }

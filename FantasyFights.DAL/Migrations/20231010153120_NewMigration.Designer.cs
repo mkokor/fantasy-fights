@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FantasyFights.DAL.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231008134453_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20231010153120_NewMigration")]
+    partial class NewMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,7 +71,7 @@ namespace FantasyFights.DAL.Migrations
                     b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Value")
+                    b.Property<string>("ValueHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

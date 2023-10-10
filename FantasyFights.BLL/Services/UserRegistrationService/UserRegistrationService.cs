@@ -65,16 +65,28 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
             };
         }
 
-        private int CreateEmailVerificationToken()
+        private async Task<string> CreateOrUpdateEmailVerificationCode(User user)
         {
-            var random = new Random();
-            return random.Next(100000, 999999);
+            var randomNumberGenerator = new Random();
+            var emailVerificationCodeValue = $"{randomNumberGenerator.Next(100000, 999999)}";
+            var emailVerificationCode = await _unitOfWork.EmailVerificationCodeRepository.GetEmailVerificationCodeByOwnerId(user.Id);
+            if (emailVerificationCode is null)
+                await _unitOfWork.EmailVerificationCodeRepository.CreateEmailVerificationCode(new EmailVerificationCode
+                {
+                    ValueHash = CryptoUtility.Hash(emailVerificationCodeValue),
+                    ExpirationDateAndTime = DateTime.Now.AddMinutes(15),
+                    OwnerId = user.Id
+                });
+            else
+                emailVerificationCode.ValueHash = CryptoUtility.Hash(emailVerificationCodeValue);
+            await _unitOfWork.SaveAsync();
+            return emailVerificationCodeValue;
         }
 
-        private void SendConfirmationEmail(Recipient recipient)
+        private async Task SendConfirmationEmail(User recipient)
         {
-            int emailVerificationToken = CreateEmailVerificationToken();
-            EmailUtility.SendEmail(ConfigurateEmailData(new List<Recipient> { recipient }, "Account Confirmation", $"Verification token: {emailVerificationToken}"));
+            var emailVerificationCode = await CreateOrUpdateEmailVerificationCode(recipient);
+            EmailUtility.SendEmail(ConfigurateEmailData(new List<Recipient> { new() { Address = recipient.Email } }, "Account Confirmation", $"Verification token: {emailVerificationCode}"));
         }
 
         public async Task<UserResponseDto> RegisterUser(UserRegistrationRequestDto userRegistrationRequestDto)
@@ -82,11 +94,11 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
             await ValidateEmail(userRegistrationRequestDto.Email);
             await ValidateUsername(userRegistrationRequestDto.Username);
             ValidatePasswordStrength(userRegistrationRequestDto.Password);
-            SendConfirmationEmail(new Recipient { Address = userRegistrationRequestDto.Email });
             var user = _mapper.Map<User>(userRegistrationRequestDto);
             user.PasswordHash = CryptoUtility.Hash(userRegistrationRequestDto.Password);
             await _unitOfWork.UserRepository.CreateUser(user);
             await _unitOfWork.SaveAsync();
+            await SendConfirmationEmail(user);
             return _mapper.Map<UserResponseDto>(user);
         }
 

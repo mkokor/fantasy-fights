@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FantasyFights.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class NewMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,7 +51,7 @@ namespace FantasyFights.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ValueHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExpirationDateAndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     OwnerId = table.Column<int>(type: "int", nullable: false)
                 },

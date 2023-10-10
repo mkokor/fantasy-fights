@@ -68,7 +68,7 @@ namespace FantasyFights.DAL.Migrations
                     b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Value")
+                    b.Property<string>("ValueHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
