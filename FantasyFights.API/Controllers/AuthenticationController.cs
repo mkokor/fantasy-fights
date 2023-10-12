@@ -36,7 +36,7 @@ namespace FantasyFights.API.Controllers
             }
         }
 
-        [HttpPost("email-confirmation")]
+        [HttpPost("email/confirmation")]
         public async Task<ActionResult> ConfirmEmail([FromBody, Required] EmailConfirmationRequestDto emailConfirmationRequestDto)
         {
             try
@@ -58,7 +58,7 @@ namespace FantasyFights.API.Controllers
             }
         }
 
-        [HttpPost("confirmation-code-email")]
+        [HttpPost("email/confirmation-code-refresh")]
         public async Task<ActionResult> SendConfirmationCodeEmail([FromBody, Required] EmailConfirmationCodeRequestDto emailConfirmationCodeRequestDto)
         {
             try
