@@ -1,4 +1,5 @@
 using FantasyFights.API.Middleware;
+using FantasyFights.API.Middlewares;
 using FantasyFights.BLL.Services.AuthenticationService;
 using FantasyFights.BLL.Services.CharactersService;
 using FantasyFights.BLL.Services.UserRegistrationService;
@@ -32,6 +33,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Setting up custom exception handling middleware.
+app.UseErrorHandler();
 
 app.UseHttpsRedirection();
 
