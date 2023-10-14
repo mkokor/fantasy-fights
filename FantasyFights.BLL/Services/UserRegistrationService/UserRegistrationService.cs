@@ -2,6 +2,7 @@ using System.Text.RegularExpressions;
 using AutoMapper;
 using FantasyFights.BLL.DTOs.EmailConfirmation;
 using FantasyFights.BLL.DTOs.User;
+using FantasyFights.BLL.Exceptions;
 using FantasyFights.BLL.Utilities;
 using FantasyFights.DAL.Entities;
 using FantasyFights.DAL.Other.Email;
@@ -24,19 +25,19 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
         {
 
             if (!EmailUtility.IsValid(email))
-                throw new ArgumentException("Format of provided email is not recognized.");
+                throw new BadRequestException("Format of provided email is not recognized.");
             var allUsers = await _unitOfWork.UserRepository.GetAllUsers();
             if (allUsers.FirstOrDefault(user => user.Email.Equals(email)) != null)
-                throw new ArgumentException("Provided email is not available.");
+                throw new BadRequestException("Provided email is not available.");
         }
 
         private async Task ValidateUsername(string username)
         {
             if (!(username.Length >= 3 && username.Any(char.IsLetter)))
-                throw new ArgumentException("Username needs to contain minimum of 3 characters, including one letter.");
+                throw new BadRequestException("Username needs to contain minimum of 3 characters, including one letter.");
             var allUsers = await _unitOfWork.UserRepository.GetAllUsers();
             if (allUsers.FirstOrDefault(user => user.Username.Equals(username)) != null)
-                throw new ArgumentException("Provided username is not available.");
+                throw new BadRequestException("Provided username is not available.");
         }
 
         private static void ValidatePasswordStrength(string password)
@@ -46,7 +47,7 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
             // minimum one special character
             if (PasswordStrengthValidation().IsMatch(password))
                 return;
-            throw new ArgumentException("Password needs to contain minimum of 8 characters, including one digit and one special character!");
+            throw new BadRequestException("Password needs to contain minimum of 8 characters, including one digit and one special character!");
         }
 
         private static EmailConfiguration ConfigurateEmailData(List<Recipient> recipients, string subject, string body)
@@ -91,9 +92,9 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
         private void VerifyEmailConfirmationCode(string acceptedValue, EmailConfirmationCode realData)
         {
             if (!CryptoUtility.Compare(realData.ValueHash, acceptedValue))
-                throw new ArgumentException("Confirmation code is incorrect.");
+                throw new BadRequestException("Confirmation code is incorrect.");
             if (realData.ExpirationDateAndTime < DateTime.Now)
-                throw new ArgumentException("Confirmation code has expired.");
+                throw new BadRequestException("Confirmation code has expired.");
         }
 
         public async Task<UserResponseDto> RegisterUser(UserRegistrationRequestDto userRegistrationRequestDto)
@@ -111,15 +112,15 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
 
         public async Task SendConfirmationEmail(string email)
         {
-            var recipient = await _unitOfWork.UserRepository.GetUserByEmail(email) ?? throw new NullReferenceException("User with provided email does not exist.");
+            var recipient = await _unitOfWork.UserRepository.GetUserByEmail(email) ?? throw new NotFoundException("User with provided email does not exist.");
             var emailConfirmationCode = await CreateOrUpdateEmailConfirmationCode(recipient);
             EmailUtility.SendEmail(ConfigurateEmailData(new List<Recipient> { new() { Address = recipient.Email } }, "Account Confirmation", $"Confirmation code: {emailConfirmationCode}"));
         }
 
         public async Task ConfirmEmail(EmailConfirmationRequestDto emailConfirmationRequestDto)
         {
-            var user = await _unitOfWork.UserRepository.GetUserByEmail(emailConfirmationRequestDto.Email) ?? throw new NullReferenceException("User with provided email does not exist.");
-            var emailConfirmationCode = await _unitOfWork.EmailConfirmationCodeRepository.GetEmailConfirmationCodeByOwnerId(user.Id) ?? throw new NullReferenceException("Confirmation code could not be found.");
+            var user = await _unitOfWork.UserRepository.GetUserByEmail(emailConfirmationRequestDto.Email) ?? throw new NotFoundException("User with provided email does not exist.");
+            var emailConfirmationCode = await _unitOfWork.EmailConfirmationCodeRepository.GetEmailConfirmationCodeByOwnerId(user.Id) ?? throw new NotFoundException("Confirmation code could not be found.");
             VerifyEmailConfirmationCode(emailConfirmationRequestDto.ConfirmationCode, emailConfirmationCode);
             user.EmailConfirmed = true;
             _unitOfWork.EmailConfirmationCodeRepository.DeleteEmailConfirmationCode(emailConfirmationCode);

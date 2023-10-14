@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FantasyFights.BLL.DTOs.Character;
+using FantasyFights.BLL.Exceptions;
 using FantasyFights.DAL.Entities;
 using FantasyFights.DAL.Repositories.CharacterRepository;
 using FantasyFights.DAL.Repositories.UnitOfWork;
@@ -31,19 +32,19 @@ namespace FantasyFights.BLL.Services.CharactersService
         {
             try
             {
-                var character = await _unitOfWork.CharacterRepository.GetCharacter(int.Parse(id)) ?? throw new NullReferenceException("Character with provided id does not exist.");
+                var character = await _unitOfWork.CharacterRepository.GetCharacter(int.Parse(id)) ?? throw new NotFoundException("Character with provided id does not exist.");
                 return _mapper.Map<CharacterResponseDto>(character);
             }
             catch (FormatException)
             {
-                throw new NullReferenceException("Character with provided id does not exist.");
+                throw new NotFoundException("Character with provided id does not exist.");
             }
         }
 
         public async Task<CharacterResponseDto> CreateCharacter(CharacterRequestDto character)
         {
             if (character.Name is null)
-                throw new ArgumentNullException("Character name field is required.");
+                throw new BadRequestException("Character name field is required.");
             var newCharacter = _mapper.Map<Character>(character);
             await _unitOfWork.CharacterRepository.CreateCharacter(newCharacter);
             await _unitOfWork.SaveAsync();

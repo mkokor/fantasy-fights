@@ -29,27 +29,13 @@ namespace FantasyFights.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CharacterResponseDto>> GetCharacter([Required] string id)
         {
-            try
-            {
-                return Ok(await _characterService.GetCharacter(id));
-            }
-            catch (NullReferenceException exception)
-            {
-                return NotFound(new { exception.Message });
-            }
+            return Ok(await _characterService.GetCharacter(id));
         }
 
         [HttpPost]
         public async Task<ActionResult<CharacterResponseDto>> CreateCharacter([Required, FromBody] CharacterRequestDto character)
         {
-            try
-            {
-                return Ok(await _characterService.CreateCharacter(character));
-            }
-            catch (ArgumentNullException exception)
-            {
-                return BadRequest(new { Message = exception.ParamName });
-            }
+            return Ok(await _characterService.CreateCharacter(character));
         }
     }
 }

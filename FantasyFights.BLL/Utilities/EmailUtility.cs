@@ -48,7 +48,7 @@ namespace FantasyFights.BLL.Utilities
             }
             catch (Exception)
             {
-                throw new Exception("Something went wrong.");
+                throw new Exception("An error occurred while trying to send email message.");
             }
         }
     }

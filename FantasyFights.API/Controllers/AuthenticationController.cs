@@ -22,46 +22,21 @@ namespace FantasyFights.API.Controllers
         [HttpPost("sign-up")]
         public async Task<ActionResult<UserResponseDto>> RegisterUser([FromBody, Required] UserRegistrationRequestDto userRegistrationRequestDto)
         {
-            try
-            {
-                return await _userRegistrationService.RegisterUser(userRegistrationRequestDto);
-            }
-            catch (ArgumentException exception)
-            {
-                return BadRequest(new { exception.Message });
-            }
+            return await _userRegistrationService.RegisterUser(userRegistrationRequestDto);
         }
 
         [HttpPost("email/confirmation")]
         public async Task<ActionResult> ConfirmEmail([FromBody, Required] EmailConfirmationRequestDto emailConfirmationRequestDto)
         {
-            try
-            {
-                await _userRegistrationService.ConfirmEmail(emailConfirmationRequestDto);
-                return Ok(new { Message = "Email successfully confirmed." });
-            }
-            catch (NullReferenceException exception)
-            {
-                return NotFound(new { exception.Message });
-            }
-            catch (ArgumentException exception)
-            {
-                return BadRequest(new { exception.Message });
-            }
+            await _userRegistrationService.ConfirmEmail(emailConfirmationRequestDto);
+            return Ok(new { Message = "Email successfully confirmed." });
         }
 
         [HttpPost("email/confirmation-code-refresh")]
         public async Task<ActionResult> SendConfirmationCodeEmail([FromBody, Required] EmailConfirmationCodeRequestDto emailConfirmationCodeRequestDto)
         {
-            try
-            {
-                await _userRegistrationService.SendConfirmationEmail(emailConfirmationCodeRequestDto.Email);
-                return Ok(new { Message = "Confirmation code email successfully sent." });
-            }
-            catch (NullReferenceException exception)
-            {
-                return NotFound(new { exception.Message });
-            }
+            await _userRegistrationService.SendConfirmationEmail(emailConfirmationCodeRequestDto.Email);
+            return Ok(new { Message = "Confirmation code email successfully sent." });
         }
     }
 }
