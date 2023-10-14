@@ -39,20 +39,10 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler(applicationBuilder => applicationBuilder.Run(async httpContext =>
 {
     var error = httpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
-    if (error is HttpResponseException httpResponseException)
-    {
-        httpContext.Response.StatusCode = (int)httpResponseException.StatusCode;
-        var responseBody = JsonSerializer.Serialize(new { error.Message });
-        httpContext.Response.ContentType = "application/json; charset=UTF-8";
-        await httpContext.Response.WriteAsync(responseBody);
-    }
-    else
-    {
-        httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-        var responseBody = JsonSerializer.Serialize(new { message = "Something went wrong." });
-        httpContext.Response.ContentType = "application/json; charset=UTF-8";
-        await httpContext.Response.WriteAsync(responseBody);
-    }
+    httpContext.Response.StatusCode = error is HttpResponseException httpResponseException ? (int)httpResponseException.StatusCode : StatusCodes.Status500InternalServerError;
+    httpContext.Response.ContentType = "application/json; charset=UTF-8";
+    var errorMessage = error is HttpResponseException exception ? exception.Message : "Something went wrong";
+    await httpContext.Response.WriteAsync(JsonSerializer.Serialize(new { message = errorMessage }));
 }));
 
 app.UseHttpsRedirection();

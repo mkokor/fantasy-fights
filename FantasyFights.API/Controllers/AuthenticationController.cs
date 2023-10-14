@@ -3,6 +3,7 @@ using FantasyFights.BLL.DTOs.EmailConfirmation;
 using FantasyFights.BLL.DTOs.User;
 using FantasyFights.BLL.Services.AuthenticationService;
 using FantasyFights.BLL.Services.UserRegistrationService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyFights.API.Controllers
