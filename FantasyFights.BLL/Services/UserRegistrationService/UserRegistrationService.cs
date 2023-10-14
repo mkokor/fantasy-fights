@@ -47,7 +47,7 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
             // minimum one special character
             if (PasswordStrengthValidation().IsMatch(password))
                 return;
-            throw new BadRequestException("Password needs to contain minimum of 8 characters, including one digit and one special character!");
+            throw new BadRequestException("Password needs to contain minimum of 8 characters, including one digit and one special character.");
         }
 
         private static EmailConfiguration ConfigurateEmailData(List<Recipient> recipients, string subject, string body)

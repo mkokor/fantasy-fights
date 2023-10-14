@@ -1,5 +1,6 @@
 using System.Text.Json;
 using FantasyFights.API.Middlewares;
+using FantasyFights.BLL.Exceptions;
 using FantasyFights.BLL.Services.AuthenticationService;
 using FantasyFights.BLL.Services.CharactersService;
 using FantasyFights.BLL.Services.UserRegistrationService;
@@ -38,10 +39,20 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler(applicationBuilder => applicationBuilder.Run(async httpContext =>
 {
     var error = httpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
-    httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-    var responseBody = JsonSerializer.Serialize(new { message = $"Something went wrong." });
-    httpContext.Response.ContentType = "application/json; charset=UTF-8";
-    await httpContext.Response.WriteAsync(responseBody);
+    if (error is HttpResponseException httpResponseException)
+    {
+        httpContext.Response.StatusCode = (int)httpResponseException.StatusCode;
+        var responseBody = JsonSerializer.Serialize(new { error.Message });
+        httpContext.Response.ContentType = "application/json; charset=UTF-8";
+        await httpContext.Response.WriteAsync(responseBody);
+    }
+    else
+    {
+        httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        var responseBody = JsonSerializer.Serialize(new { message = "Something went wrong." });
+        httpContext.Response.ContentType = "application/json; charset=UTF-8";
+        await httpContext.Response.WriteAsync(responseBody);
+    }
 }));
 
 app.UseHttpsRedirection();
