@@ -3,7 +3,7 @@ using System.Text.Json;
 using FantasyFights.BLL.DTOs.EmailConfirmation;
 using FantasyFights.BLL.DTOs.User;
 
-namespace FantasyFights.API.Middleware
+namespace FantasyFights.API.Middlewares
 {
     public class JsonBodyDataCheckMiddleware<T>
     {

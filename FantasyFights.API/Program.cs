@@ -1,10 +1,11 @@
-using FantasyFights.API.Middleware;
+using System.Text.Json;
 using FantasyFights.API.Middlewares;
 using FantasyFights.BLL.Services.AuthenticationService;
 using FantasyFights.BLL.Services.CharactersService;
 using FantasyFights.BLL.Services.UserRegistrationService;
 using FantasyFights.DAL;
 using FantasyFights.DAL.Repositories.UnitOfWork;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
 DotNetEnv.Env.Load();
@@ -34,8 +35,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Setting up custom exception handling middleware.
-app.UseErrorHandler();
+app.UseExceptionHandler(applicationBuilder => applicationBuilder.Run(async httpContext =>
+{
+    var error = httpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
+    httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+    var responseBody = JsonSerializer.Serialize(new { message = $"Something went wrong." });
+    httpContext.Response.ContentType = "application/json; charset=UTF-8";
+    await httpContext.Response.WriteAsync(responseBody);
+}));
 
 app.UseHttpsRedirection();
 

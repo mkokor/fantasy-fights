@@ -23,14 +23,7 @@ namespace FantasyFights.API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<CharacterResponseDto>>> GetAllCharacters()
         {
-            try
-            {
-                return Ok(await _characterService.GetAllCharacters());
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Something went wrong." });
-            }
+            return Ok(await _characterService.GetAllCharacters());
         }
 
         [HttpGet("{id}")]
@@ -44,10 +37,6 @@ namespace FantasyFights.API.Controllers
             {
                 return NotFound(new { exception.Message });
             }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Something went wrong." });
-            }
         }
 
         [HttpPost]
@@ -60,10 +49,6 @@ namespace FantasyFights.API.Controllers
             catch (ArgumentNullException exception)
             {
                 return BadRequest(new { Message = exception.ParamName });
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Something went wrong." });
             }
         }
     }

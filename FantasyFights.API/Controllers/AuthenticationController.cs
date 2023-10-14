@@ -30,10 +30,6 @@ namespace FantasyFights.API.Controllers
             {
                 return BadRequest(new { exception.Message });
             }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Something went wrong." });
-            }
         }
 
         [HttpPost("email/confirmation")]
@@ -52,10 +48,6 @@ namespace FantasyFights.API.Controllers
             {
                 return BadRequest(new { exception.Message });
             }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Something went wrong." });
-            }
         }
 
         [HttpPost("email/confirmation-code-refresh")]
@@ -69,10 +61,6 @@ namespace FantasyFights.API.Controllers
             catch (NullReferenceException exception)
             {
                 return NotFound(new { exception.Message });
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Something went wrong." });
             }
         }
     }

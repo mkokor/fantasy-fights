@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FantasyFights.DAL.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231010163942_NewMigration")]
-    partial class NewMigration
+    [Migration("20231014100448_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
