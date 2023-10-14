@@ -51,5 +51,23 @@ namespace FantasyFights.BLL.Utilities
                 throw new Exception("An error occurred while trying to send email message.");
             }
         }
+
+        // This method is customized for this application.
+        public static EmailConfiguration ConfigurateEmailData(List<Recipient> recipients, string subject, string body)
+        {
+            return new EmailConfiguration
+            {
+                Host = EnvironmentUtility.GetEnvironmentVariable("EMAIL_HOST"),
+                Port = int.Parse(EnvironmentUtility.GetEnvironmentVariable("EMAIL_PORT")),
+                Sender = new Sender
+                {
+                    Address = EnvironmentUtility.GetEnvironmentVariable("EMAIL_ADDRESS"),
+                    Password = EnvironmentUtility.GetEnvironmentVariable("EMAIL_PASSWORD")
+                },
+                Recipients = recipients,
+                Subject = subject,
+                Body = body
+            };
+        }
     }
 }

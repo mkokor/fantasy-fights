@@ -50,24 +50,6 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
             throw new BadRequestException("Password needs to contain minimum of 8 characters, including one digit and one special character.");
         }
 
-        private static EmailConfiguration ConfigurateEmailData(List<Recipient> recipients, string subject, string body)
-        {
-            // This method is customized for this application.
-            return new EmailConfiguration
-            {
-                Host = EnvironmentUtility.GetEnvironmentVariable("EMAIL_HOST"),
-                Port = int.Parse(EnvironmentUtility.GetEnvironmentVariable("EMAIL_PORT")),
-                Sender = new Sender
-                {
-                    Address = EnvironmentUtility.GetEnvironmentVariable("EMAIL_ADDRESS"),
-                    Password = EnvironmentUtility.GetEnvironmentVariable("EMAIL_PASSWORD")
-                },
-                Recipients = recipients,
-                Subject = subject,
-                Body = body
-            };
-        }
-
         private async Task<string> CreateOrUpdateEmailConfirmationCode(User user)
         {
             var randomNumberGenerator = new Random();
@@ -114,7 +96,7 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
         {
             var recipient = await _unitOfWork.UserRepository.GetUserByEmail(email) ?? throw new NotFoundException("User with provided email does not exist.");
             var emailConfirmationCode = await CreateOrUpdateEmailConfirmationCode(recipient);
-            EmailUtility.SendEmail(ConfigurateEmailData(new List<Recipient> { new() { Address = recipient.Email } }, "Account Confirmation", $"Confirmation code: {emailConfirmationCode}"));
+            EmailUtility.SendEmail(EmailUtility.ConfigurateEmailData(new List<Recipient> { new() { Address = recipient.Email } }, "Account Confirmation", $"Confirmation code: {emailConfirmationCode}"));
         }
 
         public async Task ConfirmEmail(EmailConfirmationRequestDto emailConfirmationRequestDto)
