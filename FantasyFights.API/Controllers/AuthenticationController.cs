@@ -37,7 +37,7 @@ namespace FantasyFights.API.Controllers
         public async Task<ActionResult> SendConfirmationCodeEmail([FromBody, Required] EmailConfirmationCodeRequestDto emailConfirmationCodeRequestDto)
         {
             await _userRegistrationService.SendConfirmationEmail(emailConfirmationCodeRequestDto.Email);
-            return Ok(new { Message = "Confirmation code email successfully sent." });
+            return Ok(new { Message = "Confirmation code email successfully sent to provided email address." });
         }
     }
 }
