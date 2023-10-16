@@ -26,7 +26,7 @@ namespace FantasyFights.BLL.Utilities
         {
             try
             {
-                // Use email verification API for complete verification
+                // Use email verification API for complete verification.
                 _ = new MailAddress(value);
                 return true;
             }
@@ -68,6 +68,12 @@ namespace FantasyFights.BLL.Utilities
                 Subject = subject,
                 Body = body
             };
+        }
+
+        public static string GenerateEmailConfirmationCode()
+        {
+            var randomNumberGenerator = new Random();
+            return $"{randomNumberGenerator.Next(100000, 999999)}";
         }
     }
 }

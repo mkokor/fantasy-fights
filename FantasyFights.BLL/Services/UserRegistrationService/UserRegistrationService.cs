@@ -52,8 +52,7 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
 
         private async Task<string> CreateOrUpdateEmailConfirmationCode(User user)
         {
-            var randomNumberGenerator = new Random();
-            var emailConfirmationCodeValue = $"{randomNumberGenerator.Next(100000, 999999)}";
+            var emailConfirmationCodeValue = EmailUtility.GenerateEmailConfirmationCode();
             var emailConfirmationCode = await _unitOfWork.EmailConfirmationCodeRepository.GetEmailConfirmationCodeByOwnerId(user.Id);
             if (emailConfirmationCode is null)
                 await _unitOfWork.EmailConfirmationCodeRepository.CreateEmailConfirmationCode(new EmailConfirmationCode
