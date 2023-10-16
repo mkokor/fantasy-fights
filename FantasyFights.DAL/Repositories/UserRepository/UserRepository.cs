@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Threading.Tasks;
 using FantasyFights.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,6 +31,11 @@ namespace FantasyFights.DAL.Repositories.UserRepository
         public async Task<User?> GetUserById(int id)
         {
             return await _databaseContext.Users.FindAsync(id);
+        }
+
+        public async Task<User?> GetUserByUsername(string username)
+        {
+            return await _databaseContext.Users.FirstOrDefaultAsync(user => user.Username.Equals(username));
         }
     }
 }

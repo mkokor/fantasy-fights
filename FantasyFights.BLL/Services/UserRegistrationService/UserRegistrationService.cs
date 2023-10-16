@@ -72,7 +72,7 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
 
         private void VerifyEmailConfirmationCode(string acceptedValue, EmailConfirmationCode realData)
         {
-            if (!CryptoUtility.Compare(realData.ValueHash, acceptedValue))
+            if (!CryptoUtility.Compare(acceptedValue, realData.ValueHash))
                 throw new BadRequestException("Confirmation code is incorrect.");
             if (realData.ExpirationDateAndTime < DateTime.Now)
                 throw new BadRequestException("Confirmation code has expired.");
@@ -93,14 +93,14 @@ namespace FantasyFights.BLL.Services.UserRegistrationService
 
         public async Task SendConfirmationEmail(string email)
         {
-            var recipient = await _unitOfWork.UserRepository.GetUserByEmail(email) ?? throw new NotFoundException("User with provided email does not exist.");
+            var recipient = await _unitOfWork.UserRepository.GetUserByEmail(email) ?? throw new NotFoundException("User with provided email could not be found.");
             var emailConfirmationCode = await CreateOrUpdateEmailConfirmationCode(recipient);
             EmailUtility.SendEmail(EmailUtility.ConfigurateEmailData(new List<Recipient> { new() { Address = recipient.Email } }, "Account Confirmation", $"Confirmation code: {emailConfirmationCode}"));
         }
 
         public async Task ConfirmEmail(EmailConfirmationRequestDto emailConfirmationRequestDto)
         {
-            var user = await _unitOfWork.UserRepository.GetUserByEmail(emailConfirmationRequestDto.Email) ?? throw new NotFoundException("User with provided email does not exist.");
+            var user = await _unitOfWork.UserRepository.GetUserByEmail(emailConfirmationRequestDto.Email) ?? throw new NotFoundException("User with provided email could not be found.");
             var emailConfirmationCode = await _unitOfWork.EmailConfirmationCodeRepository.GetEmailConfirmationCodeByOwnerId(user.Id) ?? throw new NotFoundException("Confirmation code could not be found.");
             VerifyEmailConfirmationCode(emailConfirmationRequestDto.ConfirmationCode, emailConfirmationCode);
             user.EmailConfirmed = true;

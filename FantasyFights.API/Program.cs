@@ -4,11 +4,12 @@ using FantasyFights.BLL.Exceptions;
 using FantasyFights.BLL.Services.AuthenticationService;
 using FantasyFights.BLL.Services.CharactersService;
 using FantasyFights.BLL.Services.UserRegistrationService;
+using FantasyFights.BLL.Utilities;
+using FantasyFights.BLL.Utilities.TokenUtility;
 using FantasyFights.DAL;
 using FantasyFights.DAL.Repositories.UnitOfWork;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 DotNetEnv.Env.Load();
 
@@ -26,6 +27,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICharactersService, CharactersService>();
 builder.Services.AddScoped<IUserRegistrationService, UserRegistrationService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<ITokenUtility, TokenUtility>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
@@ -47,7 +49,7 @@ app.UseExceptionHandler(applicationBuilder => applicationBuilder.Run(async httpC
     var error = httpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
     httpContext.Response.StatusCode = error is HttpResponseException httpResponseException ? (int)httpResponseException.StatusCode : StatusCodes.Status500InternalServerError;
     httpContext.Response.ContentType = "application/json; charset=UTF-8";
-    var errorMessage = error is HttpResponseException exception ? exception.Message : "Something went wrong";
+    var errorMessage = error is HttpResponseException exception ? exception.Message : "Something went wrong.";
     await httpContext.Response.WriteAsync(JsonSerializer.Serialize(new { message = errorMessage }));
 }));
 

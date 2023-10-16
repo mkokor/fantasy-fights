@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 
 namespace FantasyFights.BLL.Utilities
 {
@@ -20,7 +16,14 @@ namespace FantasyFights.BLL.Utilities
 
         public static bool Compare(string value, string hash)
         {
-            return BCrypt.Net.BCrypt.Verify(hash, value);
+            try
+            {
+                return BCrypt.Net.BCrypt.Verify(value, hash);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

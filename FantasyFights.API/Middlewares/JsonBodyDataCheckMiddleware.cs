@@ -51,17 +51,17 @@ namespace FantasyFights.API.Middlewares
     {
         public static IApplicationBuilder UseRegistrationDataCheck(this IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<JsonBodyDataCheckMiddleware<UserRegistrationRequestDto>>("/api/authentication/sign-up", "Provide email, username and password in JSON format.");
+            return builder.UseMiddleware<JsonBodyDataCheckMiddleware<UserRegistrationRequestDto>>("/api/auth/sign-up", "Provide email, username and password in JSON format.");
         }
 
         public static IApplicationBuilder UseEmailConfirmationDataCheck(this IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<JsonBodyDataCheckMiddleware<EmailConfirmationRequestDto>>("/api/authentication/email-confirmation", "Provide email and confirmation code in JSON format.");
+            return builder.UseMiddleware<JsonBodyDataCheckMiddleware<EmailConfirmationRequestDto>>("/api/auth/email/confirmation", "Provide email and confirmation code in JSON format.");
         }
 
         public static IApplicationBuilder UseEmailConfirmationCodeRequestDataCheck(this IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<JsonBodyDataCheckMiddleware<EmailConfirmationCodeRequestDto>>("/api/authentication/confirmation-code-email", "Provide email in JSON format.");
+            return builder.UseMiddleware<JsonBodyDataCheckMiddleware<EmailConfirmationCodeRequestDto>>("/api/auth/email/confirmation-code-refresh", "Provide email in JSON format.");
         }
     }
 }
