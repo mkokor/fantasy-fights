@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FantasyFights.DAL.Repositories.CharacterRepository;
 using FantasyFights.DAL.Repositories.EmailConfirmationCodeRepository;
+using FantasyFights.DAL.Repositories.RefreshTokenRepository;
 using FantasyFights.DAL.Repositories.UserRepository;
 
 namespace FantasyFights.DAL.Repositories.UnitOfWork
@@ -15,6 +16,7 @@ namespace FantasyFights.DAL.Repositories.UnitOfWork
         public ICharacterRepository CharacterRepository { get; init; }
         public IUserRepository UserRepository { get; init; }
         public IEmailConfirmationCodeRepository EmailConfirmationCodeRepository { get; init; }
+        public IRefreshTokenRepository RefreshTokenRepository { get; init; }
 
         public UnitOfWork(DatabaseContext databaseContext)
         {
@@ -22,6 +24,7 @@ namespace FantasyFights.DAL.Repositories.UnitOfWork
             CharacterRepository = new CharacterRepository.CharacterRepository(databaseContext);
             UserRepository = new UserRepository.UserRepository(databaseContext);
             EmailConfirmationCodeRepository = new EmailConfirmationCodeRepository.EmailConfirmationCodeRepository(databaseContext);
+            RefreshTokenRepository = new RefreshTokenRepository.RefreshTokenRepository(databaseContext);
         }
 
         public async Task SaveAsync()

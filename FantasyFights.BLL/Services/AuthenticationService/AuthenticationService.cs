@@ -3,6 +3,7 @@ using FantasyFights.BLL.DTOs.User;
 using FantasyFights.BLL.Exceptions;
 using FantasyFights.BLL.Utilities;
 using FantasyFights.BLL.Utilities.TokenUtility;
+using FantasyFights.DAL.Entities;
 using FantasyFights.DAL.Repositories.UnitOfWork;
 
 namespace FantasyFights.BLL.Services.AuthenticationService
@@ -19,6 +20,14 @@ namespace FantasyFights.BLL.Services.AuthenticationService
             _mapper = mapper;
             _tokenUtility = tokenUtility;
         }
+
+        /* private async Task<Tuple<string, RefreshToken>> CreateRefreshToken(User user)
+        {
+            var refreshToken = _tokenUtility.GenerateRefreshToken(user);
+            // refreshToken = await _unitOfWork.RefreshTokenRepository.CreateRefreshToken(refreshToken);
+            await _unitOfWork.SaveAsync();
+            return new Tuple<string, RefreshToken>(refreshToken.Item1, refreshToken.Item2);
+        } */
 
         public async Task<UserLoginResponseDto> LogInUser(UserLoginRequestDto userLoginRequestDto)
         {
