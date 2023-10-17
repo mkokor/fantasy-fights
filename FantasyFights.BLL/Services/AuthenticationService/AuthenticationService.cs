@@ -21,13 +21,13 @@ namespace FantasyFights.BLL.Services.AuthenticationService
             _tokenUtility = tokenUtility;
         }
 
-        /* private async Task<Tuple<string, RefreshToken>> CreateRefreshToken(User user)
+        private async Task<Tuple<string, RefreshToken>> CreateRefreshToken(User user)
         {
             var refreshToken = _tokenUtility.GenerateRefreshToken(user);
-            // refreshToken = await _unitOfWork.RefreshTokenRepository.CreateRefreshToken(refreshToken);
+            await _unitOfWork.RefreshTokenRepository.CreateRefreshToken(refreshToken.Item2);
             await _unitOfWork.SaveAsync();
             return new Tuple<string, RefreshToken>(refreshToken.Item1, refreshToken.Item2);
-        } */
+        }
 
         public async Task<UserLoginResponseDto> LogInUser(UserLoginRequestDto userLoginRequestDto)
         {
@@ -36,6 +36,7 @@ namespace FantasyFights.BLL.Services.AuthenticationService
                 throw new BadRequestException("Email is not confirmed.");
             if (!CryptoUtility.Compare(userLoginRequestDto.Password, user.PasswordHash))
                 throw new BadRequestException("Password does not match the username.");
+            await CreateRefreshToken(user);
             return new UserLoginResponseDto
             {
                 AccessToken = _tokenUtility.GenerateAccessToken(user)
