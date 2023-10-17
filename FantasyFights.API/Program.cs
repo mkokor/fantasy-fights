@@ -57,6 +57,8 @@ app.UseExceptionHandler(applicationBuilder => applicationBuilder.Run(async httpC
 
 app.UseHttpsRedirection();
 
+app.UseLoginDataCheck();
+
 app.UseRegistrationDataCheck();
 
 app.UseEmailConfirmationDataCheck();
