@@ -63,9 +63,17 @@ namespace FantasyFights.BLL.Utilities.TokenUtility
         #endregion
 
         #region RefreshToken
-        public string GenerateRefreshToken()
+        public Tuple<string, RefreshToken> GenerateRefreshToken(User user)
         {
-            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+            var refreshTokenValue = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+            var refreshToken = new RefreshToken
+            {
+                ValueHash = CryptoUtility.Hash(refreshTokenValue),
+                ExpirationDateAndTime = DateTime.Now.AddDays(1),
+                OwnerId = user.Id,
+                Owner = user
+            };
+            return new Tuple<string, RefreshToken>(refreshTokenValue, refreshToken);
         }
         #endregion
     }

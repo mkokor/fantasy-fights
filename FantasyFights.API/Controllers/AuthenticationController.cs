@@ -20,6 +20,13 @@ namespace FantasyFights.API.Controllers
             _userRegistrationService = userRegistrationService;
         }
 
+        [HttpPost("sign-in")]
+        public async Task<ActionResult> LogInUser([FromBody, Required] UserLoginRequestDto userLoginRequestDto)
+        {
+            var result = await _authenticationService.LogInUser(userLoginRequestDto);
+            return Ok(result);
+        }
+
         [HttpPost("sign-up")]
         public async Task<ActionResult<UserResponseDto>> RegisterUser([FromBody, Required] UserRegistrationRequestDto userRegistrationRequestDto)
         {
@@ -38,13 +45,6 @@ namespace FantasyFights.API.Controllers
         {
             await _userRegistrationService.SendConfirmationEmail(emailConfirmationCodeRequestDto.Email);
             return Ok(new { Message = "Confirmation code email successfully sent to provided email address." });
-        }
-
-        [HttpPost("sign-in")]
-        public async Task<ActionResult> LogInser([FromBody, Required] UserLoginRequestDto userLoginRequestDto)
-        {
-            var result = await _authenticationService.LogInUser(userLoginRequestDto);
-            return Ok(result);
         }
     }
 }

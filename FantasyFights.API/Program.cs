@@ -24,9 +24,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseMySql(builder.Configuration.GetConnectionString("MySqlServerDefaultConnection"), new MySqlServerVersion(new Version(8, 0, 32))));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 builder.Services.AddScoped<ICharactersService, CharactersService>();
 builder.Services.AddScoped<IUserRegistrationService, UserRegistrationService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+
 builder.Services.AddScoped<ITokenUtility, TokenUtility>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

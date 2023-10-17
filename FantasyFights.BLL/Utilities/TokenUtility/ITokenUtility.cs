@@ -6,6 +6,6 @@ namespace FantasyFights.BLL.Utilities.TokenUtility
     {
         string GenerateAccessToken(User user);
 
-        string GenerateRefreshToken();
+        Tuple<string, RefreshToken> GenerateRefreshToken(User user);
     }
 }

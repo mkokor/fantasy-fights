@@ -10,7 +10,6 @@ namespace FantasyFights.DAL.Entities
     {
         public int Id { get; set; }
         public required string ValueHash { get; set; }
-
         public required DateTime ExpirationDateAndTime { get; set; }
 
         [ForeignKey("User")]
